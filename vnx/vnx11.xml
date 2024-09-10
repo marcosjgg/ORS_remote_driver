@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<vnx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="/usr/share/xml/vnx/vnx-2.00.xsd">
+  <global>
+    <version>2.0</version>
+    <scenario_name>vnx11</scenario_name>
+    <!--ssh_key>~/.ssh/id_dsa.pub</ssh_key-->
+    <automac/>
+    <!--vm_mgmt type="none" /-->
+    <vm_mgmt type="private" network="10.250.0.0" mask="24" offset="200">
+       <host_mapping />
+    </vm_mgmt>
+    <vm_defaults>
+        <console id="0" display="no"/>
+        <console id="1" display="yes"/>
+    </vm_defaults>
+
+    <cmd-seq seq="ls12">ls1,ls2</cmd-seq>
+    <cmd-seq seq="ls123">ls12,ls3</cmd-seq>
+    <cmd-seq seq="ls1234">ls123,ls4</cmd-seq>
+
+    <vnx_cfg>vnx1.cvnx</vnx_cfg>
+
+    <help>
+        <seq_help seq='start-www'>Start apache2 web server</seq_help>
+        <seq_help seq='stop-www'>Stop apache2 web server</seq_help>
+    </help>
+    
+  </global>
+
+  <net name="Net0" mode="virtual_bridge" />
+  <net name="virbr0" mode="virtual_bridge" managed="no"/>
+
+  <vm name="ors" type="lxc" arch="x86_64">
+    <filesystem type="cow">/usr/share/vnx/filesystems/rootfs_lxc_ubuntu64</filesystem>
+    <if id="1" net="Net0">
+      <ipv4>10.1.0.2/24</ipv4>
+      <ipv6>2001:db8:0::2/64</ipv6>
+    </if>
+    <if id="9" net="virbr0">
+      <ipv4>dhcp</ipv4>
+    </if>
+    <route type="ipv4" gw="10.1.0.1">10.1.0.0/16</route>   
+    <route type="ipv6" gw="2001:db8:0::1">2001:db8::/32</route>
+  </vm>
+
+  <vm name="route_sc" type="lxc" arch="x86_64">
+    <filesystem type="cow">/usr/share/vnx/filesystems/rootfs_lxc_ubuntu64</filesystem>
+    <if id="1" net="Net0">
+      <ipv4>10.1.0.3/24</ipv4>
+      <ipv6>2001:db8:0::3/64</ipv6>
+    </if>
+    <if id="9" net="virbr0">
+      <ipv4>dhcp</ipv4>
+    </if>
+    <route type="ipv4" gw="10.1.0.1">10.1.0.0/16</route>
+    <route type="ipv6" gw="2001:db8:0::1">2001:db8::/32</route>
+    <exec seq="ls1" type="verbatim">ls -al /tmp</exec>
+    <exec seq="ls2" type="verbatim">ls -al /root</exec>
+    <exec seq="ls3" type="verbatim">ls -al /usr</exec>
+    <exec seq="ls4" type="verbatim">ls -al /bin</exec>
+  </vm>
+
+  <vm name="remote_dr" type="lxc" arch="x86_64">
+   <filesystem type="cow">/usr/share/vnx/filesystems/rootfs_lxc_ubuntu64</filesystem>
+   <if id="1" net="Net0">
+      <ipv4>10.1.0.4/24</ipv4>
+      <ipv6>2001:db8:2::2/64</ipv6>
+    </if>
+    <if id="9" net="virbr0">
+      <ipv4>dhcp</ipv4>
+    </if>
+    <route type="ipv4" gw="10.1.0.1">10.1.0.0/16</route>
+    <route type="ipv6" gw="2001:db8:2::1">2001:db8::/32</route>
+       
+  </vm>
+
+</vnx>
