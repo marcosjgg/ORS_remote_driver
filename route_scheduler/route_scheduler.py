@@ -4,6 +4,7 @@ import requests
 import json
 import random
 import logging
+import time
 
 app = FastAPI()
 
@@ -18,7 +19,7 @@ class RouteRequest(BaseModel):
     end: tuple
 
 def load_mode_config(mode):
-        with open(f'{mode}.json', 'r') as file:
+        with open(f'modos/{mode}.json', 'r') as file:
             return json.load(file)
 
 def get_route_from_ors(start, end, mode):
@@ -51,7 +52,7 @@ async def change_route(request: RouteRequest):
         start_time = time.time()
         logger.info(f"Recieved request: {request}")
         
-        mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_routes'])
+        mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_route'])
         route_data = get_route_from_ors(request.start, request.end, mode)
         
         end_time = time.time()
@@ -66,7 +67,7 @@ async def get_route(request: RouteRequest):
         start_time = time.time()
         logger.info(f"Received request: {request}")
         
-        mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_routes'])
+        mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_route'])
         route_data = get_route_from_ors(request.start, request.end, mode)
         
         end_time = time.time() 
