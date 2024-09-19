@@ -21,7 +21,7 @@ async def fetch_route(session, url, payload, request_id):
         response_time = time.time() - start_time
         result = await response.json()
         mode = result.get('mode', 'unknown')
-        logger.info(f"Received response {request_id}, Mode: {mode}, Status: {response.status}, Time taken: {response_time:.2f} seconds")
+        logger.info(f"Respuesta recibida {request_id}, Modo: {mode}, Estado: {response.status}, Tiempo de respuesta desde ORS: {response_time:.2f} segundos")
         return response.status, result, response_time
 
 async def main():
@@ -37,7 +37,7 @@ async def main():
 
         for idx, (status, result, response_time) in enumerate(results):
             mode = result.get('mode', 'unknown')
-            logger.info(f"Request {idx + 1}: Status {status}, Mode {mode}, Time {response_time:.2f} seconds, Result {result}")
+            logger.info(f"Request {idx + 1}: Estado {status}, Modo {mode}, Tiempo {response_time:.2f} segundos, Resultado {result}")
                 
 
 if __name__ == "__main__":
