@@ -1,5 +1,6 @@
 {
-	"start": [-3.688340, 40.453219],
-	"end": [-3.711404, 40.423988],
-	"alternative_routes": 3
+	"coordinates":[[-3.688340, 40.453219],[-3.711404, 40.423988]],
+	"alternative_routes": {
+		"target_count": 3
+	}
 }
