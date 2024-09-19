@@ -5,6 +5,8 @@ import json
 import random
 import logging
 import time
+import polyline
+
 
 app = FastAPI()
 
@@ -55,8 +57,15 @@ async def change_route(request: RouteRequest):
         mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_route'])
         route_data = get_route_from_ors(request.start, request.end, mode)
         
+        if 'routes' in route_data:
+            for route in route_data['routes']:
+                if 'geometry' in route:
+                    route['geometry'] = polyline.decode(route['geometry'])
+
         end_time = time.time()
         logger.info(f"Processed request: {request}, Total time taken: {end_time - start_time:2.f} seconds")
+        
+        route_data['mode'] = mode 
         return route_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -70,9 +79,29 @@ async def get_route(request: RouteRequest):
         mode = random.choice(['simple_route', 'avoid_polygons', 'alternative_route'])
         route_data = get_route_from_ors(request.start, request.end, mode)
         
-        end_time = time.time() 
+        geometry = None
+        if 'routes' in route_data:
+            route = route_data['routes'][0]
+            if 'geometry' in route:
+                encoded_geometry = route['geometry']
+                geometry = polyline.decode(encoded_geometry)
+                   
+
+
+        end_time = time.time()
+        total_time = end_time - start_time
         logger.info(f"Processed request: {request}, Total time taken: {end_time - start_time:.2f} seconds")
-        return route_data
+        
+        return {
+                "request": {
+                    "start": request.start,
+                    "end": request.end
+                    },
+                "geometry": geometry
+                }
+
+        #route_data['mode'] = mode
+        #return route_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
