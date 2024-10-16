@@ -6,3 +6,12 @@ En modo general se crea un entorno virtual con la herrramienta de virtualizació
  - route_scheduler: servidor que prepara las peticiones a ORS y procesa sus respuestas.
  - remote_driver: simulación del entorno de un conductor remoto, que solicita una ruta desde una coordenada X a una coordenada Y.
 
+## Instalación de ORS de manera local
+Se instala openrouteservice de manera local, tal como se indica en la página web oficial https://giscience.github.io/openrouteservice/run-instance/building-from-source 
+Dentro del contenedor ORS, seguir los pasos de instalación.
+
+### Configuraciones
+Para cargar los datos de la localización geográfica deseada, se deben descargar del sitio web https://download.geofabrik.de/ y ser cargados en la ruta ors-api/src/test/files y eliminar el archivo por defecto heidelberg.osm.gz
+** Los formatos soportados de OSM son .osm, .osm.gz, .osm.zip y .pbf
+Con el objetivo de que los datos geográficos sean inicializados en ORS, hay que eliminar los datos dentro de los directorios ./graphs y  ./elevation_cache
+Modificar el archivo ors-config.yml con el nombre del archivo descargado.
