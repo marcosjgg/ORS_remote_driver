@@ -19,6 +19,7 @@ Para cargar los datos de la localización geográfica deseada, se deben descarga
 Con el objetivo de que los datos geográficos sean inicializados en ORS, hay que eliminar los datos dentro de los directorios ./graphs y  ./elevation_cache.
 
 Modificar el archivo ors-config.yml con el nombre del archivo descargado.
+
 Luego de realizar esta configuración inicial, iniciar ORS con el comando mvn spring-boot:run
 
 ## route_scheduler
